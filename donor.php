@@ -66,17 +66,17 @@
 
 
 	<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Are you delete this record?</strong>
+                <strong>Are you sure want delete this record?</strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <form target="" method="post">
                 <br>
                 <input type="hidden" name="delId" value="">
-                <button type="submit" name="delete" class="btn btn-danger">Yes</button>
+                <button type="submit" name="delete" class="btn btn-danger">YES</button>
 
                 <button type="button" class="btn btn-info" data-dismiss="alert">
-                <span aria-hidden="true">Oops! No </span>
+                <span aria-hidden="true">SORRY! NO </span>
                 </button>      
             </form>
      </div>

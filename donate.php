@@ -1,11 +1,29 @@
 <?php 
   include ('include/header.php');
   if(isset($_POST['submit'])){
-    if($_POST)['terms']===true){
-      
+    if(isset($_POST['terms'])=== true){
+      if(isset($_POST['name']) && !empty($_POST['name'])){
 
-    }
+        if(preg_match('/^[A-Za-z\s]+$/',$_POST['name'])){ 
+
+      }else{
+        $nameError ='<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Only lower and upper case and space</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>';
+      }
+
+      }else{
+              $nameError ='<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>please fill the name field</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>';
   }
+    }
 ?>
 
 <style>
@@ -19,21 +37,22 @@
 		border: .5px solid #eee;
 		border-radius: 5px;
 		padding: 20px 10px 20px 30px;
-		-webkit-box-shadow: 0px 2px 5px -2px rgba(89,89,89,0.95);
--moz-box-shadow: 0px 2px 5px -2px rgba(89,89,89,0.95);
-box-shadow: 0px 2px 5px -2px rgba(89,89,89,0.95);
+		-webkit-box-shadow: 0px 2px 5px -2px rgba(194, 128, 128, 0.95);
+-moz-box-shadow: 0px 2px 5px -2px rgba(85, 8, 8, 0.95);
+box-shadow: 0px 2px 5px -2px rgba(241, 95, 95, 0.95);
 	}
 	.form-group{
 		text-align: left;
 	}
 	h1{
-		color: white;
+		color: black;
 	}
 	h3{
 		color: #e74c3c;
 		text-align: center;
 	}
 	.red-bar{
+    color:rgb(214, 45, 27);
 		width: 25%;
 	}
 </style>
@@ -53,7 +72,7 @@ box-shadow: 0px 2px 5px -2px rgba(89,89,89,0.95);
 					
           <!-- Error Messages -->
 
-				<form class="form-group" action="" method="post">
+				<form class="form-group" action="" method="post" novalidate="">
 					<div class="form-group">
 						<label for="fullname">Full Name</label>
 						<input type="text" name="name" id="fullname" placeholder="Full Name" required pattern="[A-Za-z/\s]+" title="Only lower and upper case and space" class="form-control">
@@ -75,6 +94,9 @@ box-shadow: 0px 2px 5px -2px rgba(89,89,89,0.95);
 			<div class="form-container">
   <div class="form-header">
     <h2>Sign Up</h2>
+    <?php
+     if(isset($termError)) echo $termError;
+    ?>
   </div>
   <form method="post" action="#">
     <!-- Gender -->
