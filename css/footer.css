@@ -1,0 +1,48 @@
+/* Contact Us Section Styling */
+.container-fluid.contactus {
+    background-color: #343a40; /* Dark background for contrast */
+    color: #ffffff; /* White text for visibility */
+    padding: 50px 20px; /* Add spacing for a neat layout */
+}
+
+.contactus h1 {
+    font-size: 2.5rem;
+    font-family: 'Roboto', sans-serif; /* Modern font */
+    margin-bottom: 20px;
+    color: #aca9a9; /* Highlighted red color for the title */
+}
+
+.white-bar {
+    width: 50px;
+    height: 4px;
+    background-color: #ff4757; /* Matching red color */
+    margin: 0 auto 20px auto; /* Centered and spaced */
+}
+
+.contactus a {
+    text-decoration: none;
+    color: #ff4757; /* Highlighted color for GitHub link */
+    font-size: 2rem; /* Large icon size */
+    transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+.contactus a:hover {
+    color: #ffd32a; /* Bright yellow color on hover */
+}
+
+.contactus .details {
+    font-size: 1.2rem;
+    font-family: 'Roboto', sans-serif;
+    margin-top: 20px;
+    text-align: center; /* Center align the details text */
+}
+
+.contactus .details i {
+    margin-left: 10px; /* Add space between text and icons */
+    color: #ff4757; /* Icon color matches theme */
+}
+
+.contactus .details p {
+    font-size: 1rem;
+    color: #ccc; /* Subtle grey text for secondary details */
+}
