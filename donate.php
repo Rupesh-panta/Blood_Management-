@@ -1,30 +1,175 @@
 <?php 
-  include ('include/header.php');
-  if(isset($_POST['submit'])){
-    if(isset($_POST['terms'])=== true){
-      if(isset($_POST['name']) && !empty($_POST['name'])){
+include('include/header.php');
 
-        if(preg_match('/^[A-Za-z\s]+$/',$_POST['name'])){ 
+if (isset($_POST['submit'])) {
+    $errors = []; // Array to store errors
 
-      }else{
-        $nameError ='<div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Only lower and upper case and space</strong>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>';
-      }
-
-      }else{
-              $nameError ='<div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>please fill the name field</strong>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>';
-  }
+    // Terms validation
+    if (!isset($_POST['terms'])) {
+        $errors['terms'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>You must agree to the terms and conditions.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
     }
+
+    // Name validation
+    if (isset($_POST['name']) && !empty($_POST['name'])) {
+        if (!preg_match('/^[A-Za-z\s]+$/', $_POST['name'])) {
+            $errors['name'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Only letters and spaces are allowed in the name.</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+        }
+    } else {
+        $errors['name'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Please fill in the name field.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    }
+
+    // Gender validation
+    if (!isset($_POST['gender']) || empty($_POST['gender'])) {
+        $errors['gender'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Please select your gender.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    }
+
+    if (isset($_POST['date']) && isset($_POST['month']) && isset($_POST['year'])) {
+      $day = $_POST['date'];
+      $month = $_POST['month'];
+      $year = $_POST['year'];
+  
+      // Check if all fields are selected
+      if (!empty($day) && !empty($month) && !empty($year)) {
+          // Check if the combination forms a valid date
+          if (checkdate($month, $day, $year)) {
+              $formattedDate = sprintf('%02d-%02d-%04d', $day, $month, $year); // DD-MM-YYYY format
+          } else {
+              $errors['date'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>Invalid date. Please select a valid day, month, and year.</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>';
+          }
+      } else {
+          $errors['date'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Please select a valid date.</strong>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>';
+      }
+  } else {
+      $errors['date'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Please select the day, month, and year for the date.</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>';
+  }
+  
+    // Email validation
+    if (isset($_POST['email']) && !empty($_POST['email'])) {
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Invalid email address.</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+        }
+    } else {
+        $errors['email'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Please enter your email address.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    }
+
+    // Contact number validation
+    if (isset($_POST['contact_no']) && !empty($_POST['contact_no'])) {
+        if (!preg_match('/^\d{10}$/', $_POST['contact_no'])) { // Assuming 10-digit phone number
+            $errors['contact_no'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Invalid contact number. It must be 10 digits.</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+        }
+    } else {
+        $errors['contact_no'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Please enter your contact number.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    }
+
+    // City validation
+    if (isset($_POST['city']) && !empty($_POST['city'])) {
+        if (!preg_match('/^[A-Za-z\s]+$/', $_POST['city'])) {
+            $errors['city'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Invalid city name. Only letters and spaces are allowed.</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+        }
+    } else {
+        $errors['city'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Please enter your city.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    }
+
+    // Password validation
+    if (isset($_POST['password']) && !empty($_POST['password'])) {
+        if (strlen($_POST['password']) < 8) {
+            $errors['password'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Password must be at least 8 characters long.</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+        }
+    } else {
+        $errors['password'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Please enter a password.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    }
+
+    // Display errors
+    if (!empty($errors)) {
+        foreach ($errors as $error) {
+            echo $error;
+        }
+    } else {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Form submitted successfully!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    }
+}
 ?>
+
 
 <style>
 	.size{
@@ -76,7 +221,8 @@ box-shadow: 0px 2px 5px -2px rgba(241, 95, 95, 0.95);
 					<div class="form-group">
 						<label for="fullname">Full Name</label>
 						<input type="text" name="name" id="fullname" placeholder="Full Name" required pattern="[A-Za-z/\s]+" title="Only lower and upper case and space" class="form-control">
-					</div><!--full name-->
+					  <?php if(isset($nameError)) echo $nameError; ?>
+          </div><!--full name-->
 					<div class="form-group">
               <label for="name">Blood Group</label><br>
               <select class="form-control demo-default" id="blood_group" name="blood_group" required>
@@ -106,6 +252,7 @@ box-shadow: 0px 2px 5px -2px rgba(241, 95, 95, 0.95);
   Female<input type="radio" name="gender" id="gender" value="Female" style="margin-left:10px;">
   Other<input type="radio" name="gender" id="gender" value="Other" style="margin-left:10px;">
 </div><!--gender-->
+<?php if(isset($genderError)) echo $genderError; ?>
 <div class="form-inline">
 <label for="name" style="margin-right:20px;">Date of Birth</label><br>
 <select class="form-control demo-default" id="date" name="date" style="margin-bottom:10px;" required>
@@ -276,4 +423,3 @@ box-shadow: 0px 2px 5px -2px rgba(241, 95, 95, 0.95);
     </div>
   </form>
 </div>
-
