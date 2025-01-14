@@ -58,8 +58,9 @@
 <div class="container-fluid red-background size">
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
-			<h1 class="text-center">Donors</h1>
-			<hr class="white-bar">
+		<h1 style="text-align: center; color: red;">Donors</h1>
+<hr style="border: 1px solid red;">
+
 		</div>
 	</div>
 </div>
